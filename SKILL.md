@@ -1,11 +1,85 @@
 ---
 name: anything2explainer
-description: 给一个主题，产出一条黑底 MG 风格（幕底可选星点或点阵波）、有配音字幕章节进度条的科普讲解视频（中文或英文；Remotion 代码动画；时长由用户定，常用 3–5 分钟）。内含可编译模板、图元库、配音/分镜/渲染工具、风格与动效规范、多 agent 分工协议与 QC 判据，以及一条完整样片（《RAG 与知识库》）作为质量标尺。Turn any topic into a narrated motion-graphics explainer video in Chinese or English, on a black canvas with a star-field or dot-field backdrop, TTS voiceover, subtitles and a chapter progress bar, every frame drawn in code with Remotion. Use when the user asks for an explainer, educational or science-communication video about a topic, or wants an article or document turned into a video.
+description: 将主题、文章或技术资料制作成一条黑底 MG 风格（幕底可选星点或点阵波）、有配音字幕章节进度条的讲解视频，支持explainer 模式与 research_lecture 模式，  explainer 更general；research_lecture 面向本科高年级、研究生和研究人员，更强调机制、数学表达、技术细节、证据链和研究问题。（中文或英文；Remotion 代码动画；时长由用户定，常用 3–5 分钟）。该skill内含可编译模板、图元库、配音/分镜/渲染工具、风格与动效规范、多 agent 分工协议与 QC 判据，以及一条完整样片（《RAG 与知识库》）作为质量标尺。Turn any topic, article or technical material into a narrated motion-graphics explainer video in Chinese or English, on a black canvas with a star-field or dot-field backdrop, TTS voiceover, subtitles and a chapter progress bar, every frame drawn in code with Remotion. Use when the user asks for an explainer, educational or science-communication video about a topic, or wants an article or document turned into a video.
 ---
 
 # anything2explainer
 
 把任意技术/知识主题做成一条**原创**科普讲解视频。视觉体系固定（黑底幕底——星点雾底或点阵波二选一（`config.bg`）、白线条图形 + 紫色重点、超粗黑体、44px 白字黑边字幕、底部章节进度条、顶部胶囊 HUD），变化的是内容与规模：时长由用户定（确认点 1），解说词、分镜、镜头代码随之而变。样片：`examples/rag/`（4′35″，44 句、44 镜头，8 个构建组并行 40 分钟，两轮 QC）。**目标是和样片风格一致、质量相近**——先看 `examples/rag/frames/overview_*.jpg` 建立标尺，再开工。
+
+## Content Modes
+
+This skill supports two content modes. 
+
+### MODE: explainer
+
+Use for general science communication and broad educational content.
+
+Priorities:
+- intuitive explanation
+- accessible analogies
+- visual storytelling
+- limited mathematical detail
+- broad audience comprehension
+
+Typical structure:
+context → concept → mechanism → example → takeaway
+
+### MODE: research_lecture
+
+Use when the user explicitly requests a research-oriented,
+technical, academic, or dissertation-level explainer.
+
+Target audience:
+- senior undergraduate
+- graduate student
+- researcher / engineer entering the topic
+
+Priorities:
+1. mechanism over metaphor
+2. technical correctness over simplification
+3. explicit definitions
+4. mathematical structure when useful
+5. tensor / data flow / algorithm flow visualization
+6. distinction between established facts and hypotheses
+7. explicit research motivation
+8. preservation of technical terminology
+
+Do NOT simplify away the mechanism merely to make the narration
+sound more popular-science-like.
+
+A metaphor may introduce an idea, but must not replace the
+technical explanation.
+
+When a mathematical object appears in narration, prefer showing
+the object or its computational role visually.
+
+Every major claim should be traceable to:
+- an original paper,
+- official documentation,
+- or another authoritative primary source.
+
+If the user provides source material, treat it as the primary
+technical specification and do not override it with generic
+web summaries.
+
+### Mode selection
+
+If the user explicitly specifies a mode, follow it. 
+
+Otherwise:
+- default to `explainer`
+- automatically recommend `research_lecture` when the topic is
+  a dissertation, paper, algorithm, model architecture,
+  mathematical method, systems mechanism, or research project.
+
+The main session should state the selected mode before
+narration is written.
+
+Remember: 
+When MODE = research_lecture: 
+read reference/research-lecture.md
+
 
 ## 何时用
 - 用户给出主题（"讲一下 X"）要一条讲解视频；或给出一篇文章/文档要改成视频。
